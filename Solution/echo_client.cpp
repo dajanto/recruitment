@@ -53,30 +53,46 @@ void on_message(client* c, websocketpp::connection_hdl hdl, message_ptr msg) {
 	// Print payload
 	std::cout << j << std::endl;
 
+	bool syserror = false;
+	bool sysupdating = false;
+	bool sysbooting = false;
+
+	// TODO Maybe a change is when old volume differs from new volume? 
+	bool playbackvolumechanged = false;
+	bool playbackinactive = false;
+
+	// TODO Bluetooth paired state should be remembered
+	bool bluetoothpairing = false;
+
+	bool playbackplayingandbluetoothconnected = false;
+	bool playbackplaying = false;
+
+	bool playbackpaused = false;
+
 	if(j.contains("system")) {
+
+		syserror = j["system"].get<std::string>() == "error";
+		sysupdating = j["system"].get<std::string>() == "updating";
+		sysbooting = j["system"].get<std::string>() == "booting";
 	}
 
 	if(j.contains("playback")) {
+
+		// TODO Maybe a change is when old volume differs from new volume? 
+		playbackvolumechanged = j.contains("volume");
+		playbackinactive = j["playbback"].get<std::string>() == "inactive";
+		//playbackplayingandbluetoothconnected = j["playbback"].get<std::string>() == "playing" && bluetoothpairing; 
+		playbackplayingandbluetoothconnected = j["playbback"].get<std::string>() == "playing";
+		playbackplaying = j["playbback"].get<std::string>() == "playing";
+		playbackpaused = j["playbback"].get<std::string>() == "paused";
 	}
 
 	if(j.contains("bluetooth")) {
+
+		// TODO Bluetooth paired state should be remembered
+		bluetoothpairing = j["bluetooth"].get<std::string>() == "pairing";
 	}
 
-	bool syserror = j["system"].get<std::string>() == "error";
-	bool sysupdating = j["system"].get<std::string>() == "updating";
-	bool sysbooting = j["system"].get<std::string>() == "booting";
-
-	// TODO Maybe a change is when old volume differs from new volume? 
-	bool playbackvolumechanged = j.contains("volume");
-	bool playbackinactive = j["playbback"].get<std::string>() == "inactive";
-
-	// TODO Bluetooth paired state should be remembered
-	bool bluetoothpairing = j["bluetooth"].get<std::string>() == "pairing";
-
-	bool playbackplayingandbluetoothconnected = j["playbback"].get<std::string>() == "playing" && bluetoothpairing; 
-	bool playbackplaying = j["playbback"].get<std::string>() == "playing";
-
-	bool playbackpaused = j["playbback"].get<std::string>() == "paused";
 
 	if(syserror) {
 
@@ -99,9 +115,6 @@ void on_message(client* c, websocketpp::connection_hdl hdl, message_ptr msg) {
 		std::cout << "off" << std::endl;
 		std::cout << "blue@100" << std::endl;
 	} 
-
-	if(j.contains("playback")) {
-
 
 	if(playbackvolumechanged) {
 
@@ -136,8 +149,6 @@ void on_message(client* c, websocketpp::connection_hdl hdl, message_ptr msg) {
 		std::cout << "white@50" << std::endl;
 
 	} 
-
-	}
 
 	websocketpp::lib::error_code ec;
 
