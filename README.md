@@ -35,12 +35,12 @@ Created from templates made available by Stagehand under a BSD-style
 
 ## Challenge Solution Building and Running 
 
-dart bin/recruitment.dart
-git clone --recursive-submodules https://github.com/dajanto/recruitment
-cd recruitment
-cd boost
-./sh booststrap.sh
-./b2
-cd ..
-g++ -pthread -I ~/Downloads/recruitment/websocketpp/ -I ~/Downloads/recruitment/boost/ -I ~/Downloads/recruitment/json/include/ Solution/echo_client.cpp -o foobar
+dart bin/recruitment.dart  
+git clone --recursive-submodules https://github.com/dajanto/recruitment  
+cd recruitment  
+cd boost  
+./sh booststrap.sh  
+./b2  
+cd ..  
+g++ -pthread -I ~/Downloads/recruitment/websocketpp/ -I ~/Downloads/recruitment/boost/ -I ~/Downloads/recruitment/json/include/ Solution/echo_client.cpp -o foobar  
 ./foobar
